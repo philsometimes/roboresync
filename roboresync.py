@@ -5,8 +5,6 @@
 
 import os
 import ffmpy
-# uncomment for Butterflow
-    # import subprocess
 
 rootDir = input("Video folder (type or drag): ")
 rawVideos = []
@@ -26,26 +24,16 @@ numRoboVideos = 0
 print("Found a total of " + str(numRawVideos) + " XROMM videos")
 
 for video in rawVideos:
-    roboFilename = video[:-4] + ".robo.drop1.avi"
-    ffmpy.FFmpeg(inputs={video: None},outputs={roboFilename: ['-y','-q:v','0','-vf', 'select=gte(n\,1),unsharp=luma_amount=2.0']}).run()
+    roboDrop0Filename = video[:-4] + ".robo.drop0.avi"
+    roboDrop1Filename = video[:-4] + ".robo.drop1.avi"
+    ffmpy.FFmpeg(inputs={video: None},outputs={roboDrop0Filename: ['-y','-q:v','0','-vf', 'unsharp=luma_amount=2.0']}).run()
+    ffmpy.FFmpeg(inputs={video: None},outputs={roboDrop1Filename: ['-y','-q:v','0','-vf', 'select=gte(n\,1),unsharp=luma_amount=2.0']}).run()
     numRoboVideos = numRoboVideos + 1
     print("Enhanced " + str(numRoboVideos) + " of " + str(numRawVideos) + " raw videos")
 
-    # uncomment for half-frame interpolation
-        # roboFilenameHalf = os.path.basename(file)[:-4] + ".robo.drophalf.avi"
-        # ffmpy.FFmpeg(inputs={filename: None},outputs={roboFilenameHalf: ['-y','-q:v','0','-vf', 'minterpolate=fps=20:mi_mode=mci:mc_mode=obmc:me_mode=bilat:vsbmc=1,select=gte(n\,1),framestep=2,unsharp=luma_amount=1']}).run()
+    # for half-frame interpolation
+        # ['-y','-q:v','0','-vf', 'minterpolate=fps=20:mi_mode=mci:mc_mode=obmc:me_mode=bilat:vsbmc=1,select=gte(n\,1),framestep=2,unsharp=luma_amount=2.0']}).run()
 
-
-# alt version using Butterflow (https://github.com/dthpham/butterflow). Requires OpenCL SDK via Nvidia CUDA (https://developer.nvidia.com/cuda-downloads).
-    # for file in rawVideos:
-    #     filename = os.path.basename(file)
-    #     roboFilename1 = os.path.basename(file)[:-4] + ".robo.drop1.avi"
-    #     roboFilenameHalfmp4 = os.path.basename(file)[:-4] + ".robo.drophalf.mp4"
-    #     roboFilenameHalfavi = os.path.basename(file)[:-4] + ".robo.drophalf.avi"
-    #     ffmpy.FFmpeg(inputs={filename: None},outputs={roboFilename1: ['-y','-q:v','0','-vf', 'select=gte(n\,1),unsharp=luma_amount=1']}).run()
-    #     subprocess.call(["butterflow","-l","-v","-sm","-r","2x",filename,"-o",roboFilenameHalfmp4])
-    #     ffmpy.FFmpeg(inputs={roboFilenameHalfmp4: None},outputs={roboFilenameHalfavi: ['-y','-q:v','0','-vf', 'select=gte(n\,1),framestep=2,unsharp=luma_amount=1']}).run()
-    #     os.remove(roboFilenameHalfmp4)
 
 
 # autodeletes script at end of execution
