@@ -5,3 +5,5 @@ Automatically sharpens and drops frames from biplanar x-ray videos for better tr
 - unsharp luma=1-3 works well with a lower xmalab threshold, e.g. 1-2. Best tested is luma 2 on 90kV 2.2mA.
 - only interpolate half-frames when absolutely necessary, minterpolate does well with isolated markers but creates ghosting when the background is busy, e.g. when markers cross over other stuff. Butterflow (see below) is slightly better but slower
 - requires Python 3 (https://www.python.org/downloads/), FFmpeg (https://www.ffmpeg.org/download.html), ffmpy (https://pypi.org/project/ffmpy/). FFmpeg needs to be in PATH.
+
+[demo image](demo.jpg)
